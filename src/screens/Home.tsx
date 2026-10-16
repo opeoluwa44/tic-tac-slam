@@ -2,7 +2,7 @@ import { Globe, Trophy, User } from "lucide-react";
 import { Button } from "../components/Button";
 import { SlamHero } from "../components/SlamHero";
 
-export function Home() {
+export function Home({ onPlayLocal }: { onPlayLocal: () => void }) {
   return (
     <main className="relative isolate mx-auto flex min-h-dvh max-w-[430px] flex-col overflow-hidden px-6 py-6">
       {/* warm glow behind the hero */}
@@ -35,7 +35,7 @@ export function Home() {
       </p>
 
       <div className="mt-auto flex flex-col gap-3 pt-8">
-        <Button>Play on one phone</Button>
+        <Button onClick={onPlayLocal}>Play on one phone</Button>{" "}
         <div className="flex gap-3">
           <Button variant="secondary" size="md">
             <Globe size={18} /> Play online

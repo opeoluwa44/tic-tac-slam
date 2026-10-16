@@ -1,5 +1,15 @@
+import { useState } from "react";
 import { Home } from "./screens/Home";
+import { Game } from "./screens/Game";
+
+type Screen = "home" | "game";
 
 export default function App() {
-  return <Home />;
+  const [screen, setScreen] = useState<Screen>("home");
+
+  return screen === "home" ? (
+    <Home onPlayLocal={() => setScreen("game")} />
+  ) : (
+    <Game onExit={() => setScreen("home")} />
+  );
 }

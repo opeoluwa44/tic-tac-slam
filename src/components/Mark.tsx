@@ -1,14 +1,32 @@
-import type { ReactNode } from "react";
-
-export function Vinyl({ children }: { children?: ReactNode }) {
+export function XMark({ size = 56 }: { size?: number }) {
   return (
-    <div
-      className="vinyl-grooves flex size-52 items-center justify-center rounded-full shadow-[0_20px_50px_rgba(0,0,0,0.6),inset_0_0_0_3px_#050505]"
-      aria-hidden="true"
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 64 64"
+      fill="none"
+      stroke="#fcf5e8"
+      strokeWidth="10"
+      strokeLinecap="round"
+      aria-label="X"
     >
-      <div className="flex size-[72px] items-center justify-center rounded-full bg-linear-to-br from-amber to-ember">
-        {children}
-      </div>
-    </div>
+      <path d="M14 14L50 50M50 14L14 50" />
+    </svg>
+  );
+}
+
+export function OMark({ size = 56 }: { size?: number }) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 64 64"
+      fill="none"
+      stroke="#f59a45"
+      strokeWidth="10"
+      aria-label="O"
+    >
+      <circle cx="32" cy="32" r="19" />
+    </svg>
   );
 }
