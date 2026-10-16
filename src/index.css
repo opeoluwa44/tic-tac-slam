@@ -1,0 +1,36 @@
+@import "tailwindcss";
+
+@theme {
+  --color-cream: #fcf5e8;
+  --color-ink: #0f0907;
+  --color-roast: #150d09;
+  --color-brown: #3d1f13;
+  --color-tile: #1e1511;
+  --color-muted: #a8998c;
+  --color-amber: #f8bf5a;
+  --color-ember: #ee7a3a;
+  --color-slab-x: #8f7a5a;
+  --color-slab-o: #a8481b;
+
+  --font-display: "Anton", sans-serif;
+  --font-body: "DM Sans", sans-serif;
+
+  --shadow-press: 0 5px 0 #b9521f, 0 14px 30px rgba(238, 122, 58, 0.25);
+}
+
+@layer base {
+  body {
+    margin: 0;
+    font-family: var(--font-body);
+    color: var(--color-cream);
+    background:
+      radial-gradient(rgba(255, 255, 255, 0.07) 1px, transparent 1.5px) 0 0 /
+        22px 22px,
+      linear-gradient(180deg, #3d1f13 0%, #150d09 40%, #0f0907 100%);
+    background-attachment: fixed;
+  }
+}
+
+.vinyl-grooves {
+  background: repeating-radial-gradient(circle, #1c1c1c 0 2px, #101010 2px 4px);
+}

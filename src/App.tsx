@@ -1,5 +1,5 @@
-function App() {
-  return <h1>Tic Tac Toe (live!)</h1>;
-}
+import { Home } from "./screens/Home";
 
-export default App;
+export default function App() {
+  return <Home />;
+}
