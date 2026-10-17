@@ -63,6 +63,8 @@ export function Board({
   disabled = false,
   onPlay,
 }: Props) {
+  const won = winLine.length === 3;
+
   return (
     <div className="relative grid grid-cols-3 gap-2.5 rounded-[30px] border border-white/10 bg-black/35 p-3">
       {board.map((cell, i) => {
@@ -79,7 +81,13 @@ export function Board({
                 : "border-white/10"
             }`}
           >
-            {cell && <SlamMark player={cell} animate={i === lastMove} />}
+            {cell && (
+              <SlamMark
+                player={cell}
+                size={34}
+                dim={won && !winLine.includes(i)}
+              />
+            )}
           </button>
         );
       })}

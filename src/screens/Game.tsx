@@ -1,12 +1,13 @@
-import { useEffect } from "react";
 import { ChevronLeft } from "lucide-react";
-import { Link, useNavigate } from "react-router";
 import { Board } from "../components/Board";
 import { Button } from "../components/Button";
 import { ScoreCard } from "../components/ScoreCard";
 import { getWinner, isDraw } from "../game/logic";
 import { useGame } from "../game/context";
 import { gradientText } from "../ui";
+import { useEffect, useState } from "react";
+import { Link, Navigate, useNavigate } from "react-router";
+import { Screen } from "../components/Screen";
 
 const RESULT_DELAY_MS = 1400;
 
@@ -17,18 +18,21 @@ export function Game() {
   const draw = isDraw(state.board);
   const over = winner !== null || draw;
 
-  // A timer is a real side effect, so this one belongs in an effect.
+  const [arrivedFinished] = useState(over);
+
   useEffect(() => {
-    if (!over) return;
+    if (!over || arrivedFinished) return;
     const id = setTimeout(
       () => navigate("/result", { replace: true }),
       RESULT_DELAY_MS,
     );
-    return () => clearTimeout(id); // leave early (Back button) and the timer is cancelled
-  }, [over, navigate]);
+    return () => clearTimeout(id);
+  }, [over, arrivedFinished, navigate]);
+
+  if (arrivedFinished) return <Navigate to="/result" replace />;
 
   return (
-    <main className="mx-auto flex min-h-dvh max-w-[430px] flex-col gap-5 px-6 py-6">
+    <Screen className="mx-auto flex min-h-dvh max-w-[430px] flex-col gap-5 px-6 py-6">
       <header className="flex items-center justify-between">
         <Link
           to="/"
@@ -97,6 +101,6 @@ export function Game() {
           Restart round
         </Button>
       </div>
-    </main>
+    </Screen>
   );
 }

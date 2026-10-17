@@ -6,6 +6,7 @@ import { useGame } from "../game/context";
 import { gradientText } from "../ui";
 import { motion } from "motion/react";
 import { SlamMark } from "../components/SlamMark";
+import { Screen } from "../components/Screen";
 
 export function Result() {
   const { state, dispatch } = useGame();
@@ -13,11 +14,10 @@ export function Result() {
   const winner = getWinner(state.board);
   const draw = isDraw(state.board);
 
-  // Visiting /result with no finished round (or after "Next round"): go back to the game.
   if (!winner && !draw) return <Navigate to="/play" replace />;
 
   return (
-    <main className="mx-auto flex min-h-dvh max-w-[430px] flex-col px-6 py-6">
+    <Screen className="mx-auto flex min-h-dvh max-w-[430px] flex-col px-6 py-6">
       <header className="flex items-center justify-center">
         <div className="flex h-11 items-center rounded-full border border-white/15 bg-white/5 px-5 text-[15px] font-bold">
           Round {state.round}
@@ -54,7 +54,13 @@ export function Result() {
                 : "border-white/10"
             }`}
           >
-            {cell && <SlamMark player={cell} size={34} />}
+            {cell && (
+              <SlamMark
+                player={cell}
+                size={34}
+                dim={!!winner && !winner.line.includes(i)}
+              />
+            )}{" "}
           </div>
         ))}
       </div>
@@ -73,6 +79,6 @@ export function Result() {
           Back to menu
         </Button>
       </div>
-    </main>
+    </Screen>
   );
 }

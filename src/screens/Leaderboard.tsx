@@ -2,6 +2,7 @@ import { useState } from "react";
 import { ChevronLeft } from "lucide-react";
 import { Link } from "react-router";
 import { gradientText } from "../ui";
+import { Screen } from "../components/Screen";
 
 const TABS = ["Today", "This week", "All time"] as const;
 const ROWS = [
@@ -16,7 +17,7 @@ export function Leaderboard() {
   const [tab, setTab] = useState<(typeof TABS)[number]>("This week");
 
   return (
-    <main className="mx-auto flex min-h-dvh max-w-[430px] flex-col px-6 py-6">
+    <Screen className="mx-auto flex min-h-dvh max-w-[430px] flex-col px-6 py-6">
       <header className="flex items-center justify-between">
         <Link
           to="/"
@@ -79,6 +80,6 @@ export function Leaderboard() {
           </li>
         ))}
       </ol>
-    </main>
+    </Screen>
   );
 }
