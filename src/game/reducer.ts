@@ -89,3 +89,6 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
       return createInitialState();
   }
 }
+
+export const hasMatchInProgress = (s: GameState) =>
+  s.moves.length > 0 || s.round > 1;

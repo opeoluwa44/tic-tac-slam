@@ -3,15 +3,18 @@ import { Button } from "../components/Button";
 import { SlamHero } from "../components/SlamHero";
 import { useNavigate } from "react-router";
 import { useGame } from "../game/context";
+import { hasMatchInProgress } from "../game/reducer";
 
 export function Home() {
   const navigate = useNavigate();
-  const { dispatch } = useGame();
+  const { state, dispatch } = useGame();
+  const resumable = hasMatchInProgress(state);
 
-  const startLocal = () => {
+  const startNew = () => {
     dispatch({ type: "newMatch" });
     navigate("/play");
   };
+
   return (
     <main className="relative isolate mx-auto flex min-h-dvh max-w-[430px] flex-col overflow-hidden px-6 py-6">
       <div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_50%_38%,rgba(238,122,58,0.22),transparent_60%)]" />
@@ -43,7 +46,18 @@ export function Home() {
       </p>
 
       <div className="mt-auto flex flex-col gap-3 pt-8">
-        <Button onClick={startLocal}>Play on one phone</Button>
+        {resumable ? (
+          <>
+            <Button onClick={() => navigate("/play")}>
+              Resume match · Round {state.round}
+            </Button>
+            <Button variant="secondary" onClick={startNew}>
+              New match
+            </Button>
+          </>
+        ) : (
+          <Button onClick={startNew}>Play on one phone</Button>
+        )}
         <div className="flex gap-3">
           <Button
             variant="secondary"

@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { createInitialState, gameReducer } from "./reducer";
+import { createInitialState, gameReducer, hasMatchInProgress } from "./reducer";
 
 const play = (...cells: number[]) =>
   cells.reduce(
@@ -54,5 +54,9 @@ describe("gameReducer", () => {
     expect(gameReducer(won, { type: "newMatch" })).toEqual(
       createInitialState(),
     );
+  });
+  it("hasMatchInProgress is false for a fresh match and true after a move", () => {
+    expect(hasMatchInProgress(createInitialState())).toBe(false);
+    expect(hasMatchInProgress(play(4))).toBe(true);
   });
 });

@@ -1,7 +1,6 @@
 import { describe, it, expect } from "vitest";
 import { emptyBoard, getWinner, isDraw, makeMove, type Board } from "./logic";
 
-// Readable boards: X, O, and "." for empty. Whitespace is ignored.
 const parse = (s: string): Board =>
   s
     .replace(/\s/g, "")
