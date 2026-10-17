@@ -5,7 +5,7 @@ type Props = {
   board: BoardState;
   winLine?: readonly number[];
   lastMove?: number;
-  disabled: boolean;
+  disabled?: boolean;
   onPlay: (index: number) => void;
 };
 
@@ -13,7 +13,7 @@ export function Board({
   board,
   winLine = [],
   lastMove,
-  disabled,
+  disabled = false,
   onPlay,
 }: Props) {
   return (

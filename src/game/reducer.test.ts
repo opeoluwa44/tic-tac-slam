@@ -49,4 +49,10 @@ describe("gameReducer", () => {
     const s = play(0);
     expect(gameReducer(s, { type: "nextRound" })).toBe(s);
   });
+  it("newMatch resets everything", () => {
+    const won = play(0, 3, 1, 4, 2);
+    expect(gameReducer(won, { type: "newMatch" })).toEqual(
+      createInitialState(),
+    );
+  });
 });

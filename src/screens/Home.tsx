@@ -1,11 +1,19 @@
 import { Globe, Trophy, User } from "lucide-react";
 import { Button } from "../components/Button";
 import { SlamHero } from "../components/SlamHero";
+import { useNavigate } from "react-router";
+import { useGame } from "../game/context";
 
-export function Home({ onPlayLocal }: { onPlayLocal: () => void }) {
+export function Home() {
+  const navigate = useNavigate();
+  const { dispatch } = useGame();
+
+  const startLocal = () => {
+    dispatch({ type: "newMatch" });
+    navigate("/play");
+  };
   return (
     <main className="relative isolate mx-auto flex min-h-dvh max-w-[430px] flex-col overflow-hidden px-6 py-6">
-      {/* warm glow behind the hero */}
       <div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_50%_38%,rgba(238,122,58,0.22),transparent_60%)]" />
 
       <header className="flex items-center justify-between">
@@ -33,18 +41,26 @@ export function Home({ onPlayLocal }: { onPlayLocal: () => void }) {
       <p className="mt-2.5 text-center text-base text-muted">
         Two players. One grid. No mercy.
       </p>
-
+      {/* 
       <div className="mt-auto flex flex-col gap-3 pt-8">
-        <Button onClick={onPlayLocal}>Play on one phone</Button>{" "}
+        <Button onClick={startLocal}>Play on one phone</Button>
         <div className="flex gap-3">
-          <Button variant="secondary" size="md">
+          <Button
+            variant="secondary"
+            size="md"
+            onClick={() => navigate("/online")}
+          >
             <Globe size={18} /> Play online
           </Button>
-          <Button variant="secondary" size="md">
+          <Button
+            variant="secondary"
+            size="md"
+            onClick={() => navigate("/leaderboard")}
+          >
             <Trophy size={18} className="text-amber" /> Leaderboards
           </Button>
         </div>
-      </div>
+      </div> */}
     </main>
   );
 }

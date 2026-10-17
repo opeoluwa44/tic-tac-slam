@@ -19,7 +19,8 @@ export type GameAction =
   | { type: "play"; index: number }
   | { type: "undo" }
   | { type: "restartRound" }
-  | { type: "nextRound" };
+  | { type: "nextRound" }
+  | { type: "newMatch" };
 
 const other = (p: Player): Player => (p === "X" ? "O" : "X");
 const starterFor = (round: number): Player => (round % 2 === 1 ? "X" : "O");
@@ -84,5 +85,7 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
         current: starterFor(round),
       };
     }
+    case "newMatch":
+      return createInitialState();
   }
 }
