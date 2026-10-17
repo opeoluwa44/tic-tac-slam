@@ -41,7 +41,7 @@ export function Home() {
       <p className="mt-2.5 text-center text-base text-muted">
         Two players. One grid. No mercy.
       </p>
-      {/* 
+
       <div className="mt-auto flex flex-col gap-3 pt-8">
         <Button onClick={startLocal}>Play on one phone</Button>
         <div className="flex gap-3">
@@ -60,7 +60,7 @@ export function Home() {
             <Trophy size={18} className="text-amber" /> Leaderboards
           </Button>
         </div>
-      </div> */}
+      </div>
     </main>
   );
 }
