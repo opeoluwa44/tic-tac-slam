@@ -91,3 +91,49 @@ describe("hard", () => {
     expect(neverLoses(emptyBoard(), "X", "X")).toBe(true);
   });
 });
+
+// Can `player` force a win from here if both sides play their best?
+function forcedWin(board: Board, turn: Player, player: Player): boolean {
+  const winner = getWinner(board);
+  if (winner) return winner.player === player;
+  if (isDraw(board)) return false;
+  const next = getAvailableMoves(board).map((i) => makeMove(board, i, turn));
+  return turn === player
+    ? next.some((b) => forcedWin(b, opp(turn), player))
+    : next.every((b) => forcedWin(b, opp(turn), player));
+}
+
+describe("the fork test", () => {
+  const board = parse(`
+    X..
+    .O.
+    ..X
+  `);
+
+  it("medium walks into the fork", () => {
+    const move = pickMove(board, "O", "medium", () => 0);
+    expect([0, 2, 6, 8]).toContain(move); // it likes corners
+    expect(forcedWin(makeMove(board, move, "O"), "X", "X")).toBe(true); // and that loses by force
+  });
+
+  it("hard defends with an edge", () => {
+    const move = pickMove(board, "O", "hard", () => 0);
+    expect([1, 3, 5, 7]).toContain(move);
+    expect(forcedWin(makeMove(board, move, "O"), "X", "X")).toBe(false);
+  });
+});
+
+describe("medium positional play", () => {
+  it("prefers the center when nothing is urgent", () => {
+    expect(pickMove(parse("X........"), "O", "medium", () => 0)).toBe(4);
+  });
+
+  it("prefers a corner when the center is taken", () => {
+    const board = parse(`
+      ...
+      .X.
+      ...
+    `);
+    expect([0, 2, 6, 8]).toContain(pickMove(board, "O", "medium", () => 0));
+  });
+});

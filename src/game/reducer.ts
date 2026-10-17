@@ -17,6 +17,7 @@ export type GameState = {
   round: number;
   moves: number[];
   opponent: Opponent;
+  computer: Player;
 };
 
 export type GameAction =
@@ -24,9 +25,7 @@ export type GameAction =
   | { type: "undo" }
   | { type: "restartRound" }
   | { type: "nextRound" }
-  | { type: "newMatch"; opponent?: Opponent };
-
-export const COMPUTER: Player = "O"; // the human is always X
+  | { type: "newMatch"; opponent?: Opponent; computer?: Player };
 
 const other = (p: Player): Player => (p === "X" ? "O" : "X");
 const starterFor = (round: number): Player => (round % 2 === 1 ? "X" : "O");
@@ -36,9 +35,12 @@ export const hasMatchInProgress = (s: GameState) =>
   s.moves.length > 0 || s.round > 1;
 
 export const isComputerTurn = (s: GameState) =>
-  s.opponent !== "human" && s.current === COMPUTER && !isOver(s.board);
+  s.opponent !== "human" && s.current === s.computer && !isOver(s.board);
 
-export function createInitialState(opponent: Opponent = "human"): GameState {
+export function createInitialState(
+  opponent: Opponent = "human",
+  computer: Player = "O",
+): GameState {
   return {
     board: emptyBoard(),
     current: "X",
@@ -46,6 +48,7 @@ export function createInitialState(opponent: Opponent = "human"): GameState {
     round: 1,
     moves: [],
     opponent,
+    computer,
   };
 }
 
@@ -74,7 +77,7 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
       const vsComputer = state.opponent !== "human";
       const count = vsComputer ? 2 : 1;
       if (state.moves.length < count) return state;
-      if (vsComputer && state.current === COMPUTER) return state; // it's mid-thought
+      if (vsComputer && state.current === state.computer) return state; // it's mid-thought
       const removed = state.moves.slice(-count);
       return {
         ...state,
@@ -106,7 +109,9 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
       };
     }
     case "newMatch":
-      // No opponent given means a rematch against the same one.
-      return createInitialState(action.opponent ?? state.opponent);
+      return createInitialState(
+        action.opponent ?? state.opponent,
+        action.computer ?? state.computer,
+      );
   }
 }

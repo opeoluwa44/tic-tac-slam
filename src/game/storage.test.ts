@@ -51,4 +51,14 @@ describe("parseState", () => {
   it("rejects an unknown opponent", () => {
     expect(parseObj({ ...midGame(), opponent: "godlike" })).toBeNull();
   });
+
+  it("defaults the computer side to O when missing", () => {
+    const legacy = { ...midGame() } as Record<string, unknown>;
+    delete legacy.computer;
+    expect(parseObj(legacy)?.computer).toBe("O");
+  });
+
+  it("rejects an invalid computer side", () => {
+    expect(parseObj({ ...midGame(), computer: "Z" })).toBeNull();
+  });
 });

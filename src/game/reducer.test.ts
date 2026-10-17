@@ -83,3 +83,23 @@ it("isComputerTurn is true only for a live round on the computer's turn", () => 
     ),
   ).toBe(false);
 });
+
+it("the computer opens when it plays X", () => {
+  expect(isComputerTurn(createInitialState("hard", "X"))).toBe(true);
+});
+
+it("undo keeps the computer's opening move when it plays X", () => {
+  let s = createInitialState("hard", "X");
+  for (const index of [4, 0, 8]) s = gameReducer(s, { type: "play", index }); // computer, you, computer
+  const undone = gameReducer(s, { type: "undo" });
+  expect(undone.board[4]).toBe("X");
+  expect(undone.board[0]).toBeNull();
+  expect(undone.board[8]).toBeNull();
+  expect(undone.current).toBe("O");
+});
+
+it("undo is blocked when only the computer's opening move exists", () => {
+  let s = createInitialState("hard", "X");
+  s = gameReducer(s, { type: "play", index: 4 });
+  expect(gameReducer(s, { type: "undo" })).toBe(s);
+});

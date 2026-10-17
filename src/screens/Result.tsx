@@ -7,12 +7,24 @@ import { gradientText } from "../ui";
 import { motion } from "motion/react";
 import { SlamMark } from "../components/SlamMark";
 import { Screen } from "../components/Screen";
+// import { MatchBadge } from "../components/MatchBadge";
+import { labelFor, statusFor, statusText } from "../game/labels";
 
 export function Result() {
   const { state, dispatch } = useGame();
   const navigate = useNavigate();
   const winner = getWinner(state.board);
   const draw = isDraw(state.board);
+
+  const status = statusFor({
+    winner,
+    draw,
+    thinking: false,
+    current: state.current,
+    opponent: state.opponent,
+    computer: state.computer,
+  });
+  const long = statusText(status).length > 6;
 
   if (!winner && !draw) return <Navigate to="/play" replace />;
 
@@ -29,18 +41,13 @@ export function Result() {
           {winner ? "Three in a row" : "Board full, no line"}
         </p>
         <motion.h1
-          className="mt-2.5 font-display text-[116px] uppercase leading-[0.9]"
+          className={`mt-2.5 whitespace-nowrap font-display uppercase leading-[0.9] ${long ? "text-[84px]" : "text-[116px]"}`}
           initial={{ scale: 2.2, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ type: "spring", stiffness: 380, damping: 16 }}
         >
-          {winner ? (
-            <>
-              {winner.player} <span className={gradientText}>wins</span>
-            </>
-          ) : (
-            <span className={gradientText}>Draw</span>
-          )}
+          {status.lead && <>{status.lead}&nbsp;</>}
+          <span className={gradientText}>{status.accent}</span>
         </motion.h1>
       </section>
 
@@ -66,8 +73,16 @@ export function Result() {
       </div>
 
       <div className="mt-7 flex gap-3">
-        <ScoreCard player="X" score={state.scores.X} />
-        <ScoreCard player="O" score={state.scores.O} />
+        <ScoreCard
+          player="X"
+          score={state.scores.X}
+          label={labelFor("X", state.opponent, state.computer)}
+        />
+        <ScoreCard
+          player="O"
+          score={state.scores.O}
+          label={labelFor("O", state.opponent, state.computer)}
+        />
       </div>
 
       <div className="mt-auto flex flex-col gap-3.5 pt-8">

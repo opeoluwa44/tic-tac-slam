@@ -15,10 +15,10 @@ export function ScoreCard({
 }: Props) {
   return (
     <div
-      className={`flex-1 rounded-[20px] bg-tile px-4 py-3.5 ${
+      className={`flex-1 rounded-[20px] border-[1.5px] bg-tile px-4 py-3.5 ${
         active
-          ? "border-[1.5px] border-ember shadow-[0_0_22px_rgba(238,122,58,0.25)]"
-          : "border border-white/10"
+          ? "border-ember shadow-[0_0_22px_rgba(238,122,58,0.25)]"
+          : "border-white/10"
       }`}
     >
       <div className="text-[13px] font-medium text-muted">Player {label}</div>

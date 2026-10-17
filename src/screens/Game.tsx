@@ -9,8 +9,10 @@ import { useEffect, useState } from "react";
 import { Link, Navigate, useNavigate } from "react-router";
 import { Screen } from "../components/Screen";
 import { pickMove } from "../game/ai";
-import { COMPUTER, isComputerTurn } from "../game/reducer";
+import { isComputerTurn } from "../game/reducer";
 import { labelFor } from "../game/labels";
+import { statusFor } from "../game/labels";
+import { MatchBadge } from "../components/MacthBadge";
 
 const RESULT_DELAY_MS = 1400;
 
@@ -24,13 +26,25 @@ export function Game() {
   const { board, opponent } = state;
   const computerTurn = isComputerTurn(state);
 
+  const status = statusFor({
+    winner,
+    draw,
+    thinking: computerTurn,
+    current: state.current,
+    opponent,
+    computer: state.computer,
+  });
+
   const THINK_MS = 600;
 
   useEffect(() => {
     if (!computerTurn || opponent === "human") return;
     // A beat of "thinking" feels natural. An instant reply feels robotic.
     const id = setTimeout(() => {
-      dispatch({ type: "play", index: pickMove(board, COMPUTER, opponent) });
+      dispatch({
+        type: "play",
+        index: pickMove(board, state.computer, opponent),
+      });
     }, THINK_MS);
     return () => clearTimeout(id);
   }, [computerTurn, board, opponent, dispatch]);
@@ -58,44 +72,29 @@ export function Game() {
         >
           <ChevronLeft size={20} />
         </Link>
-        <div className="flex h-11 items-center rounded-full border border-white/15 bg-white/5 px-5 text-[15px] font-bold">
-          Round {state.round}
-        </div>
+        <MatchBadge round={state.round} opponent={opponent} />{" "}
         <div className="size-11" />
       </header>
 
       <div className="flex gap-3">
         <ScoreCard
           player="X"
-          label={labelFor("X", opponent)}
+          label={labelFor("X", state.opponent, state.computer)}
           score={state.scores.X}
           active={!over && state.current === "X"}
         />
 
         <ScoreCard
           player="O"
-          label={labelFor("O", opponent)}
+          label={labelFor("O", state.opponent, state.computer)}
           score={state.scores.O}
           active={!over && state.current === "O"}
         />
       </div>
 
-      <h2 className="text-center font-display text-[52px] uppercase leading-none">
-        {winner ? (
-          <>
-            {winner.player} <span className={gradientText}>wins</span>
-          </>
-        ) : draw ? (
-          <span className={gradientText}>Draw</span>
-        ) : computerTurn ? (
-          <>
-            Computer <span className={gradientText}>thinking</span>
-          </>
-        ) : (
-          <>
-            {state.current} <span className={gradientText}>to move</span>
-          </>
-        )}
+      <h2 className="flex h-14 items-center justify-center whitespace-nowrap font-display text-[52px] uppercase leading-none">
+        {status.lead && <>{status.lead}&nbsp;</>}
+        <span className={gradientText}>{status.accent}</span>
       </h2>
 
       <Board

@@ -21,13 +21,14 @@ export function parseState(raw: string | null): GameState | null {
       round,
       moves,
       opponent = "human",
+      computer = "O",
     } = data as Record<string, unknown>;
-
-    if (!isOpponent(opponent)) return null;
 
     if (!Array.isArray(board) || board.length !== 9) return null;
     if (!board.every((c) => c === null || isPlayer(c))) return null;
     if (!isPlayer(current)) return null;
+    if (!isPlayer(computer)) return null;
+    if (!isOpponent(opponent)) return null;
     if (typeof scores !== "object" || scores === null) return null;
     const { X, O } = scores as Record<string, unknown>;
     if (!isCount(X) || !isCount(O)) return null;
@@ -44,6 +45,7 @@ export function parseState(raw: string | null): GameState | null {
       round,
       moves: moves as number[],
       opponent,
+      computer,
     };
   } catch {
     return null;

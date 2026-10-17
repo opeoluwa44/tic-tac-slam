@@ -4,6 +4,8 @@ import { Screen } from "../components/Screen";
 import { useGame } from "../game/context";
 import type { Opponent } from "../game/reducer";
 import { gradientText } from "../ui";
+import type { Player } from "../game/logic";
+import { useState } from "react";
 
 const OPTIONS: { opponent: Opponent; title: string; blurb: string }[] = [
   {
@@ -27,9 +29,14 @@ const OPTIONS: { opponent: Opponent; title: string; blurb: string }[] = [
 export function NewMatch() {
   const { dispatch } = useGame();
   const navigate = useNavigate();
+  const [side, setSide] = useState<Player>("X");
 
   const start = (opponent: Opponent) => {
-    dispatch({ type: "newMatch", opponent });
+    dispatch({
+      type: "newMatch",
+      opponent,
+      computer: side === "X" ? "O" : "X",
+    });
     navigate("/play");
   };
 
@@ -45,11 +52,37 @@ export function NewMatch() {
         </Link>
       </header>
 
+      <div
+        role="radiogroup"
+        aria-label="Your side"
+        className="mt-8 flex rounded-full border border-white/10 bg-black/35 p-1"
+      >
+        {(["X", "O"] as const).map((p) => (
+          <button
+            key={p}
+            role="radio"
+            aria-checked={side === p}
+            onClick={() => setSide(p)}
+            className={`h-11 flex-1 rounded-full text-[15px] font-bold ${
+              side === p
+                ? "bg-linear-to-b from-amber to-ember text-ink"
+                : "text-muted"
+            }`}
+          >
+            Play as {p}
+            {p === "X" ? " (first)" : ""}
+          </button>
+        ))}
+      </div>
+      <p className="mt-2 text-center text-sm text-muted">
+        Applies when playing the computer
+      </p>
+
       <h1 className="mt-7 font-display text-[64px] uppercase leading-[0.95]">
         Pick your <span className={gradientText}>opponent</span>
       </h1>
 
-      <ul className="mt-8 flex flex-col gap-3">
+      <ul className="mt-4 flex flex-col gap-3">
         {OPTIONS.map(({ opponent, title, blurb }) => (
           <li key={opponent}>
             <button
