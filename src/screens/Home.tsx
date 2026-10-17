@@ -8,13 +8,10 @@ import { Screen } from "../components/Screen";
 
 export function Home() {
   const navigate = useNavigate();
-  const { state, dispatch } = useGame();
+  const { state } = useGame();
   const resumable = hasMatchInProgress(state);
 
-  const startNew = () => {
-    dispatch({ type: "newMatch" });
-    navigate("/play");
-  };
+  const startNew = () => navigate("/new");
 
   return (
     <Screen className="relative isolate mx-auto flex min-h-dvh max-w-[430px] flex-col overflow-hidden px-6 py-6">

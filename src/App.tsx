@@ -6,6 +6,7 @@ import { Leaderboard } from "./screens/Leaderboard";
 import { Result } from "./screens/Result";
 import { Soon } from "./screens/Soon";
 import { MotionConfig } from "motion/react";
+import { NewMatch } from "./screens/NewMatch";
 
 export default function App() {
   return (
@@ -18,6 +19,7 @@ export default function App() {
           <Route path="/leaderboard" element={<Leaderboard />} />
           <Route path="/online" element={<Soon title="Play online" />} />
           <Route path="*" element={<Navigate to="/" replace />} />
+          <Route path="/new" element={<NewMatch />} />
         </Routes>
       </GameProvider>
     </MotionConfig>

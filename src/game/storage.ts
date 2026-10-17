@@ -1,21 +1,29 @@
 import type { Cell } from "./logic";
-import type { GameState } from "./reducer";
+import type { GameState, Opponent } from "./reducer";
 
 const KEY = "tic-tac-vinyl:match:v1";
 
 const isPlayer = (v: unknown): v is "X" | "O" => v === "X" || v === "O";
 const isCount = (v: unknown): v is number =>
   Number.isInteger(v) && (v as number) >= 0;
+const isOpponent = (v: unknown): v is Opponent =>
+  v === "human" || v === "easy" || v === "medium" || v === "hard";
 
 export function parseState(raw: string | null): GameState | null {
   if (!raw) return null;
   try {
     const data: unknown = JSON.parse(raw);
     if (typeof data !== "object" || data === null) return null;
-    const { board, current, scores, round, moves } = data as Record<
-      string,
-      unknown
-    >;
+    const {
+      board,
+      current,
+      scores,
+      round,
+      moves,
+      opponent = "human",
+    } = data as Record<string, unknown>;
+
+    if (!isOpponent(opponent)) return null;
 
     if (!Array.isArray(board) || board.length !== 9) return null;
     if (!board.every((c) => c === null || isPlayer(c))) return null;
@@ -35,6 +43,7 @@ export function parseState(raw: string | null): GameState | null {
       scores: { X, O },
       round,
       moves: moves as number[],
+      opponent,
     };
   } catch {
     return null;

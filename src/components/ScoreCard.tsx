@@ -1,8 +1,18 @@
 import type { Player } from "../game/logic";
 
-type Props = { player: Player; score: number; active?: boolean };
+type Props = {
+  player: Player;
+  score: number;
+  active?: boolean;
+  label?: string;
+};
 
-export function ScoreCard({ player, score, active = false }: Props) {
+export function ScoreCard({
+  player,
+  score,
+  active = false,
+  label = `Player ${player}`,
+}: Props) {
   return (
     <div
       className={`flex-1 rounded-[20px] bg-tile px-4 py-3.5 ${
@@ -11,7 +21,7 @@ export function ScoreCard({ player, score, active = false }: Props) {
           : "border border-white/10"
       }`}
     >
-      <div className="text-[13px] font-medium text-muted">Player {player}</div>
+      <div className="text-[13px] font-medium text-muted">Player {label}</div>
       <div
         className={`mt-1 font-display text-[44px] leading-none ${player === "O" ? "text-[#f59a45]" : ""}`}
       >

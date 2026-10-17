@@ -39,3 +39,6 @@ export function makeMove(board: Board, index: number, player: Player): Board {
   if (board[index] !== null || getWinner(board)) return board;
   return board.map((cell, i) => (i === index ? player : cell));
 }
+
+export const getAvailableMoves = (board: Board): number[] =>
+  board.flatMap((cell, i) => (cell === null ? [i] : []));

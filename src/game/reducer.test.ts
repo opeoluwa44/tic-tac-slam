@@ -1,5 +1,6 @@
 import { describe, it, expect } from "vitest";
 import { createInitialState, gameReducer, hasMatchInProgress } from "./reducer";
+import { isComputerTurn } from "./reducer";
 
 const play = (...cells: number[]) =>
   cells.reduce(
@@ -59,4 +60,26 @@ describe("gameReducer", () => {
     expect(hasMatchInProgress(createInitialState())).toBe(false);
     expect(hasMatchInProgress(play(4))).toBe(true);
   });
+});
+
+const vsComputer = (...cells: number[]) =>
+  cells.reduce(
+    (s, index) => gameReducer(s, { type: "play", index }),
+    createInitialState("hard"),
+  );
+
+it("undo against the computer takes back both moves", () => {
+  const undone = gameReducer(vsComputer(0, 4), { type: "undo" }); // you at 0, computer at 4
+  expect(undone.board.every((c) => c === null)).toBe(true);
+  expect(undone.current).toBe("X");
+});
+
+it("isComputerTurn is true only for a live round on the computer's turn", () => {
+  expect(isComputerTurn(createInitialState("hard"))).toBe(false);
+  expect(isComputerTurn(vsComputer(0))).toBe(true);
+  expect(
+    isComputerTurn(
+      gameReducer(createInitialState(), { type: "play", index: 0 }),
+    ),
+  ).toBe(false);
 });

@@ -1,3 +1,4 @@
+import type { Difficulty } from "./ai";
 import {
   emptyBoard,
   getWinner,
@@ -7,12 +8,15 @@ import {
   type Player,
 } from "./logic";
 
+export type Opponent = "human" | Difficulty;
+
 export type GameState = {
   board: Board;
   current: Player;
   scores: Record<Player, number>;
   round: number;
   moves: number[];
+  opponent: Opponent;
 };
 
 export type GameAction =
@@ -20,19 +24,28 @@ export type GameAction =
   | { type: "undo" }
   | { type: "restartRound" }
   | { type: "nextRound" }
-  | { type: "newMatch" };
+  | { type: "newMatch"; opponent?: Opponent };
+
+export const COMPUTER: Player = "O"; // the human is always X
 
 const other = (p: Player): Player => (p === "X" ? "O" : "X");
 const starterFor = (round: number): Player => (round % 2 === 1 ? "X" : "O");
 const isOver = (board: Board) => getWinner(board) !== null || isDraw(board);
 
-export function createInitialState(): GameState {
+export const hasMatchInProgress = (s: GameState) =>
+  s.moves.length > 0 || s.round > 1;
+
+export const isComputerTurn = (s: GameState) =>
+  s.opponent !== "human" && s.current === COMPUTER && !isOver(s.board);
+
+export function createInitialState(opponent: Opponent = "human"): GameState {
   return {
     board: emptyBoard(),
     current: "X",
     scores: { X: 0, O: 0 },
     round: 1,
     moves: [],
+    opponent,
   };
 }
 
@@ -56,17 +69,24 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
       };
     }
     case "undo": {
-      const last = state.moves.at(-1);
-      if (last === undefined || isOver(state.board)) return state;
+      if (isOver(state.board)) return state;
+      // Against the computer, undo takes back your move AND its reply.
+      const vsComputer = state.opponent !== "human";
+      const count = vsComputer ? 2 : 1;
+      if (state.moves.length < count) return state;
+      if (vsComputer && state.current === COMPUTER) return state; // it's mid-thought
+      const removed = state.moves.slice(-count);
       return {
         ...state,
-        board: state.board.map((cell, i) => (i === last ? null : cell)),
-        moves: state.moves.slice(0, -1),
-        current: other(state.current),
+        board: state.board.map((cell, i) =>
+          removed.includes(i) ? null : cell,
+        ),
+        moves: state.moves.slice(0, -count),
+        current: count === 1 ? other(state.current) : state.current,
       };
     }
     case "restartRound": {
-      if (isOver(state.board)) return state; // a finished round has already been scored
+      if (isOver(state.board)) return state;
       return {
         ...state,
         board: emptyBoard(),
@@ -86,9 +106,7 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
       };
     }
     case "newMatch":
-      return createInitialState();
+      // No opponent given means a rematch against the same one.
+      return createInitialState(action.opponent ?? state.opponent);
   }
 }
-
-export const hasMatchInProgress = (s: GameState) =>
-  s.moves.length > 0 || s.round > 1;

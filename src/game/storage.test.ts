@@ -36,4 +36,19 @@ describe("parseState", () => {
   ])("rejects a tampered state: %s", (_name, bad) => {
     expect(parseObj(bad)).toBeNull();
   });
+
+  it("treats a save from before opponents existed as a human match", () => {
+    const legacy = { ...midGame() } as Record<string, unknown>;
+    delete legacy.opponent;
+    expect(parseObj(legacy)?.opponent).toBe("human");
+  });
+
+  it("round-trips a computer opponent", () => {
+    const s = { ...midGame(), opponent: "hard" as const };
+    expect(parseObj(s)).toEqual(s);
+  });
+
+  it("rejects an unknown opponent", () => {
+    expect(parseObj({ ...midGame(), opponent: "godlike" })).toBeNull();
+  });
 });

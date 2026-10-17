@@ -8,6 +8,9 @@ import { gradientText } from "../ui";
 import { useEffect, useState } from "react";
 import { Link, Navigate, useNavigate } from "react-router";
 import { Screen } from "../components/Screen";
+import { pickMove } from "../game/ai";
+import { COMPUTER, isComputerTurn } from "../game/reducer";
+import { labelFor } from "../game/labels";
 
 const RESULT_DELAY_MS = 1400;
 
@@ -17,6 +20,20 @@ export function Game() {
   const winner = getWinner(state.board);
   const draw = isDraw(state.board);
   const over = winner !== null || draw;
+
+  const { board, opponent } = state;
+  const computerTurn = isComputerTurn(state);
+
+  const THINK_MS = 600;
+
+  useEffect(() => {
+    if (!computerTurn || opponent === "human") return;
+    // A beat of "thinking" feels natural. An instant reply feels robotic.
+    const id = setTimeout(() => {
+      dispatch({ type: "play", index: pickMove(board, COMPUTER, opponent) });
+    }, THINK_MS);
+    return () => clearTimeout(id);
+  }, [computerTurn, board, opponent, dispatch]);
 
   const [arrivedFinished] = useState(over);
 
@@ -50,11 +67,14 @@ export function Game() {
       <div className="flex gap-3">
         <ScoreCard
           player="X"
+          label={labelFor("X", opponent)}
           score={state.scores.X}
           active={!over && state.current === "X"}
         />
+
         <ScoreCard
           player="O"
+          label={labelFor("O", opponent)}
           score={state.scores.O}
           active={!over && state.current === "O"}
         />
@@ -67,6 +87,10 @@ export function Game() {
           </>
         ) : draw ? (
           <span className={gradientText}>Draw</span>
+        ) : computerTurn ? (
+          <>
+            Computer <span className={gradientText}>thinking</span>
+          </>
         ) : (
           <>
             {state.current} <span className={gradientText}>to move</span>
@@ -78,7 +102,7 @@ export function Game() {
         board={state.board}
         winLine={winner?.line}
         lastMove={state.moves.at(-1)}
-        disabled={over}
+        disabled={over || computerTurn}
         onPlay={(index) => dispatch({ type: "play", index })}
       />
 
