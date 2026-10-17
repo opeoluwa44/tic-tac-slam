@@ -1,4 +1,19 @@
+import { motion } from "motion/react";
+
 const DEPTH = 16;
+
+// SVG elements scale from the SVG's top-left unless you say otherwise.
+const fromCenter = {
+  transformBox: "fill-box",
+  transformOrigin: "center",
+} as const;
+
+const slam = (delay: number) => ({
+  type: "spring" as const,
+  stiffness: 420,
+  damping: 18,
+  delay,
+});
 
 function Extrusion({ href, color }: { href: string; color: string }) {
   return (
@@ -17,7 +32,12 @@ function Extrusion({ href, color }: { href: string; color: string }) {
 
 export function SlamHero() {
   return (
-    <div className="flex h-[390px] items-center justify-center [perspective:900px]">
+    // The shake: the whole hero jolts when the O lands.
+    <motion.div
+      className="flex h-[390px] items-center justify-center [perspective:900px]"
+      animate={{ x: [0, -7, 6, -3, 0] }}
+      transition={{ delay: 0.58, duration: 0.35 }}
+    >
       <div className="[transform-style:preserve-3d] [transform:rotateX(24deg)_rotateZ(-8deg)]">
         <svg
           width="342"
@@ -49,53 +69,81 @@ export function SlamHero() {
             </g>
           </defs>
 
-          {/* The floor: contact shadow, impact rings, cracks */}
-          <ellipse
-            cx="190"
-            cy="330"
-            rx="150"
-            ry="34"
-            fill="#000"
-            opacity=".55"
-            filter="url(#soft-blur)"
-          />
-          <ellipse
-            cx="190"
-            cy="318"
-            rx="165"
-            ry="44"
-            fill="none"
-            stroke="#ee7a3a"
-            strokeWidth="2"
-            opacity=".35"
-          />
-          <ellipse
-            cx="190"
-            cy="318"
-            rx="140"
-            ry="34"
-            fill="none"
-            stroke="#f8bf5a"
-            strokeWidth="1.5"
-            opacity=".25"
-          />
-          <g
-            stroke="#fcf5e8"
-            strokeWidth="3"
-            strokeLinecap="round"
-            opacity=".35"
+          {/* Floor: shadow, rings and cracks burst outward on impact */}
+          <motion.g
+            style={fromCenter}
+            initial={{ opacity: 0, scale: 0.5 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.58, duration: 0.5, ease: "easeOut" }}
           >
-            <path d="M20 300L48 292M30 340L58 330M330 296L304 292M322 346L296 336M170 372L172 356" />
-          </g>
+            <ellipse
+              cx="190"
+              cy="330"
+              rx="150"
+              ry="34"
+              fill="#000"
+              opacity=".55"
+              filter="url(#soft-blur)"
+            />
+            <ellipse
+              cx="190"
+              cy="318"
+              rx="165"
+              ry="44"
+              fill="none"
+              stroke="#ee7a3a"
+              strokeWidth="2"
+              opacity=".35"
+            />
+            <ellipse
+              cx="190"
+              cy="318"
+              rx="140"
+              ry="34"
+              fill="none"
+              stroke="#f8bf5a"
+              strokeWidth="1.5"
+              opacity=".25"
+            />
+            <g
+              stroke="#fcf5e8"
+              strokeWidth="3"
+              strokeLinecap="round"
+              opacity=".35"
+            >
+              <path d="M20 300L48 292M30 340L58 330M330 296L304 292M322 346L296 336M170 372L172 356" />
+            </g>
+          </motion.g>
 
-          {/* Back to front: X slab, X face, O slab, O face */}
-          <Extrusion href="#x-shape" color="#8f7a5a" />
-          <use href="#x-shape" stroke="#fcf5e8" />
-          <Extrusion href="#o-shape" color="#a8481b" />
-          <use href="#o-shape" stroke="url(#o-face)" />
+          {/* X lands first */}
+          <motion.g
+            style={fromCenter}
+            initial={{ y: -150, scale: 1.4, opacity: 0 }}
+            animate={{ y: 0, scale: 1, opacity: 1 }}
+            transition={slam(0.1)}
+          >
+            <Extrusion href="#x-shape" color="#8f7a5a" />
+            <use href="#x-shape" stroke="#fcf5e8" />
+          </motion.g>
 
-          {/* Debris */}
-          <g fill="#f8bf5a" opacity=".8">
+          {/* O slams on top */}
+          <motion.g
+            style={fromCenter}
+            initial={{ y: -150, scale: 1.4, opacity: 0 }}
+            animate={{ y: 0, scale: 1, opacity: 1 }}
+            transition={slam(0.45)}
+          >
+            <Extrusion href="#o-shape" color="#a8481b" />
+            <use href="#o-shape" stroke="url(#o-face)" />
+          </motion.g>
+
+          {/* Debris pops out after impact */}
+          <motion.g
+            fill="#f8bf5a"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 0.8 }}
+            transition={{ delay: 0.62, duration: 0.2 }}
+          >
             <rect
               x="298"
               y="150"
@@ -106,9 +154,9 @@ export function SlamHero() {
             />
             <rect x="28" y="236" width="7" height="7" rx="2" />
             <rect x="316" y="96" width="6" height="6" rx="2" />
-          </g>
+          </motion.g>
         </svg>
       </div>
-    </div>
+    </motion.div>
   );
 }

@@ -5,18 +5,21 @@ import { Home } from "./screens/Home";
 import { Leaderboard } from "./screens/Leaderboard";
 import { Result } from "./screens/Result";
 import { Soon } from "./screens/Soon";
+import { MotionConfig } from "motion/react";
 
 export default function App() {
   return (
-    <GameProvider>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/play" element={<Game />} />
-        <Route path="/result" element={<Result />} />
-        <Route path="/leaderboard" element={<Leaderboard />} />
-        <Route path="/online" element={<Soon title="Play online" />} />
-        <Route path="*" element={<Navigate to="/" replace />} />
-      </Routes>
-    </GameProvider>
+    <MotionConfig reducedMotion="user">
+      <GameProvider>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/play" element={<Game />} />
+          <Route path="/result" element={<Result />} />
+          <Route path="/leaderboard" element={<Leaderboard />} />
+          <Route path="/online" element={<Soon title="Play online" />} />
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      </GameProvider>
+    </MotionConfig>
   );
 }

@@ -1,10 +1,11 @@
 import { Navigate, useNavigate } from "react-router";
 import { Button } from "../components/Button";
-import { OMark, XMark } from "../components/Mark";
 import { ScoreCard } from "../components/ScoreCard";
 import { getWinner, isDraw } from "../game/logic";
 import { useGame } from "../game/context";
 import { gradientText } from "../ui";
+import { motion } from "motion/react";
+import { SlamMark } from "../components/SlamMark";
 
 export function Result() {
   const { state, dispatch } = useGame();
@@ -27,7 +28,12 @@ export function Result() {
         <p className="text-[15px] font-bold uppercase tracking-[3px] text-muted">
           {winner ? "Three in a row" : "Board full, no line"}
         </p>
-        <h1 className="mt-2.5 font-display text-[116px] uppercase leading-[0.9]">
+        <motion.h1
+          className="mt-2.5 font-display text-[116px] uppercase leading-[0.9]"
+          initial={{ scale: 2.2, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ type: "spring", stiffness: 380, damping: 16 }}
+        >
           {winner ? (
             <>
               {winner.player} <span className={gradientText}>wins</span>
@@ -35,7 +41,7 @@ export function Result() {
           ) : (
             <span className={gradientText}>Draw</span>
           )}
-        </h1>
+        </motion.h1>
       </section>
 
       <div className="mx-auto mt-8 grid w-[270px] grid-cols-3 gap-2 rounded-[26px] border border-white/10 bg-black/35 p-2.5">
@@ -48,8 +54,7 @@ export function Result() {
                 : "border-white/10"
             }`}
           >
-            {cell === "X" && <XMark size={34} />}
-            {cell === "O" && <OMark size={34} />}
+            {cell && <SlamMark player={cell} size={34} />}
           </div>
         ))}
       </div>
