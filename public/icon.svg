@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512">
+  <defs>
+    <radialGradient id="glow" cx="50%" cy="48%" r="55%">
+      <stop offset="0" stop-color="#ee7a3a" stop-opacity=".35"/>
+      <stop offset="1" stop-color="#ee7a3a" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="o-face" gradientUnits="userSpaceOnUse" x1="0" y1="220" x2="0" y2="390">
+      <stop offset="0" stop-color="#f8bf5a"/>
+      <stop offset="1" stop-color="#ee7a3a"/>
+    </linearGradient>
+    <g id="x" fill="none" stroke-width="52" stroke-linecap="round"><path d="M138 138L270 270M270 138L138 270"/></g>
+    <g id="o" fill="none" stroke-width="48"><circle cx="304" cy="304" r="76"/></g>
+  </defs>
+  <rect width="512" height="512" rx="112" fill="#150d09"/>
+  <rect width="512" height="512" rx="112" fill="url(#glow)"/>
+  <g stroke="#8f7a5a">
+    <use xlink:href="#x" transform="translate(1.1 1.8)"/><use xlink:href="#x" transform="translate(2.2 3.6)"/>
+    <use xlink:href="#x" transform="translate(3.3 5.4)"/><use xlink:href="#x" transform="translate(4.4 7.2)"/>
+    <use xlink:href="#x" transform="translate(5.5 9)"/><use xlink:href="#x" transform="translate(6.6 10.8)"/>
+    <use xlink:href="#x" transform="translate(7.7 12.6)"/><use xlink:href="#x" transform="translate(8.8 14.4)"/>
+  </g>
+  <use xlink:href="#x" stroke="#fcf5e8"/>
+  <g stroke="#a8481b">
+    <use xlink:href="#o" transform="translate(1.1 1.8)"/><use xlink:href="#o" transform="translate(2.2 3.6)"/>
+    <use xlink:href="#o" transform="translate(3.3 5.4)"/><use xlink:href="#o" transform="translate(4.4 7.2)"/>
+    <use xlink:href="#o" transform="translate(5.5 9)"/><use xlink:href="#o" transform="translate(6.6 10.8)"/>
+    <use xlink:href="#o" transform="translate(7.7 12.6)"/><use xlink:href="#o" transform="translate(8.8 14.4)"/>
+  </g>
+  <use xlink:href="#o" stroke="url(#o-face)"/>
+</svg>

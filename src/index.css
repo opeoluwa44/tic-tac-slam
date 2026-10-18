@@ -29,6 +29,12 @@
       linear-gradient(180deg, #3d1f13 0%, #150d09 40%, #0f0907 100%);
     background-attachment: fixed;
   }
+  html {
+    overscroll-behavior: none;
+  }
+  button {
+    touch-action: manipulation; /* no double-tap zoom when tapping cells quickly */
+  }
 }
 
 .vinyl-grooves {

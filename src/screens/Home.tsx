@@ -5,6 +5,7 @@ import { useNavigate } from "react-router";
 import { useGame } from "../game/context";
 import { hasMatchInProgress } from "../game/reducer";
 import { Screen } from "../components/Screen";
+import { InstallButton } from "../components/InstallButton";
 
 export function Home() {
   const navigate = useNavigate();
@@ -12,6 +13,7 @@ export function Home() {
   const resumable = hasMatchInProgress(state);
 
   const startNew = () => navigate("/new");
+  const user = false;
 
   return (
     <Screen className="relative isolate mx-auto flex min-h-dvh max-w-[430px] flex-col overflow-hidden px-6 py-6">
@@ -22,12 +24,24 @@ export function Home() {
           <span className="size-2 rounded-full bg-ember" />
           TIC TAC TOE
         </div>
-        <button
-          aria-label="Sign in"
-          className="flex size-11 items-center justify-center rounded-full border border-white/15 bg-white/5"
-        >
-          <User size={20} />
-        </button>
+        <div className="flex items-center gap-2">
+          <InstallButton />
+          {user ? (
+            <button
+              aria-label="Sign in"
+              className="flex size-11 items-center justify-center rounded-full border border-white/15 bg-white/5"
+            >
+              <User size={20} />
+            </button>
+          ) : (
+            <button
+              aria-label="Sign in"
+              className="flex size-15 w-24 h-8 items-center justify-center rounded-2xl border border-white/15 bg-white/5"
+            >
+              Sign in
+            </button>
+          )}
+        </div>
       </header>
 
       <SlamHero />

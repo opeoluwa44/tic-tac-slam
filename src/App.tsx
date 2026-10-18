@@ -7,6 +7,7 @@ import { Result } from "./screens/Result";
 import { Soon } from "./screens/Soon";
 import { MotionConfig } from "motion/react";
 import { NewMatch } from "./screens/NewMatch";
+import { UpdatePrompt } from "./pwa/UpdatePrompt";
 
 export default function App() {
   return (
@@ -21,6 +22,7 @@ export default function App() {
           <Route path="*" element={<Navigate to="/" replace />} />
           <Route path="/new" element={<NewMatch />} />
         </Routes>
+        <UpdatePrompt />
       </GameProvider>
     </MotionConfig>
   );
