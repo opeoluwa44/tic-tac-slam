@@ -1,4 +1,4 @@
-import { Globe, Trophy, User } from "lucide-react";
+import { Globe, Trophy } from "lucide-react";
 import { Button } from "../components/Button";
 import { SlamHero } from "../components/SlamHero";
 import { useNavigate } from "react-router";
@@ -13,7 +13,6 @@ export function Home() {
   const resumable = hasMatchInProgress(state);
 
   const startNew = () => navigate("/new");
-  const user = false;
 
   return (
     <Screen className="relative isolate mx-auto flex min-h-dvh max-w-[430px] flex-col overflow-hidden px-6 py-6">
@@ -22,11 +21,11 @@ export function Home() {
       <header className="flex items-center justify-between">
         <div className="flex items-center gap-2.5 text-[13px] font-bold tracking-[4px] text-muted">
           <span className="size-2 rounded-full bg-ember" />
-          TIC TAC TOE
+          TIC TAC SLAM
         </div>
         <div className="flex items-center gap-2">
           <InstallButton />
-          {user ? (
+          {/* {user ? (
             <button
               aria-label="Sign in"
               className="flex size-11 items-center justify-center rounded-full border border-white/15 bg-white/5"
@@ -40,7 +39,7 @@ export function Home() {
             >
               Sign in
             </button>
-          )}
+          )} */}
         </div>
       </header>
 
