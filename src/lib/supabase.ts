@@ -8,10 +8,8 @@ function createSupabase(): SupabaseClient | null {
   if (!url || !key) return null;
 
   try {
-    // Keep only the origin, so a pasted "/rest/v1/" or a trailing slash can't break requests.
     return createClient(new URL(url.trim()).origin, key.trim());
   } catch {
-    // JSON.stringify makes hidden problems visible: quotes, spaces, a missing "https://".
     console.error(
       `VITE_SUPABASE_URL is not a valid URL: ${JSON.stringify(url)}. ` +
         "It should look like https://your-project-ref.supabase.co",

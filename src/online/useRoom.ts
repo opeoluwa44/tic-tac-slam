@@ -2,7 +2,6 @@ import { useCallback, useEffect, useState } from "react";
 import { supabase } from "../lib/supabase";
 import type { Room } from "./rooms";
 
-// Keep whichever copy of the room has the higher version, so a late update can't undo a newer one.
 const newer = (current: Room | null, incoming: Room): Room =>
   current && current.version >= incoming.version ? current : incoming;
 
@@ -31,8 +30,6 @@ export function useRoom(roomId: string | undefined) {
       )
       .subscribe(async (status) => {
         if (status !== "SUBSCRIBED") return;
-        // Fetch only AFTER subscribing so nothing slips through the gap.
-        // This also re-syncs automatically if the connection drops and comes back.
         const { data, error } = await client
           .from("rooms")
           .select("*")
@@ -49,7 +46,6 @@ export function useRoom(roomId: string | undefined) {
     };
   }, [roomId]);
 
-  // For results returned by our own calls. They race with the live updates, so they merge the same way.
   const apply = useCallback(
     (incoming: Room) => setRoom((cur) => newer(cur, incoming)),
     [],

@@ -3,7 +3,7 @@ import { statusFor, statusText } from "./labels";
 import type { Player, Winner } from "./logic";
 import type { Opponent } from "./reducer";
 
-const MAX_CHARS = 12; // the headline slot is one fixed-height line
+const MAX_CHARS = 12;
 
 describe("statusFor", () => {
   it("never produces a headline too long for its slot", () => {
@@ -42,7 +42,7 @@ describe("statusFor", () => {
       opponent: "hard" as Opponent,
       computer: "O" as Player,
     };
-    expect(statusText(statusFor({ ...base, winner: null }))).toBe("Your move");
+    expect(statusText(statusFor({ ...base, winner: null }))).toBe("Your turn");
     expect(
       statusText(statusFor({ ...base, winner: null, thinking: true })),
     ).toBe("Thinking");

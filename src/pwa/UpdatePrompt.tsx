@@ -8,7 +8,6 @@ export function UpdatePrompt() {
     updateServiceWorker,
   } = useRegisterSW({
     onRegisteredSW(_url, registration) {
-      // An installed app can stay open for days. Check for updates hourly.
       if (registration) setInterval(() => registration.update(), HOUR_MS);
     },
   });

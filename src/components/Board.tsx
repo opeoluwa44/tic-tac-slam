@@ -10,7 +10,6 @@ type Props = {
   onPlay: (index: number) => void;
 };
 
-// Cell index → center point, in a 3×3 coordinate space.
 const center = (i: number) => ({
   x: (i % 3) + 0.5,
   y: Math.floor(i / 3) + 0.5,
@@ -22,7 +21,7 @@ function WinLine({ line }: { line: readonly number[] }) {
   const len = Math.hypot(b.x - a.x, b.y - a.y);
   const ux = (b.x - a.x) / len;
   const uy = (b.y - a.y) / len;
-  const pad = 0.3; // overshoot past the end cells so it reads as a strike-through
+  const pad = 0.3;
 
   return (
     <svg
@@ -30,7 +29,6 @@ function WinLine({ line }: { line: readonly number[] }) {
       aria-hidden="true"
       className="pointer-events-none absolute inset-3 drop-shadow-[0_0_8px_rgba(238,122,58,0.9)]"
     >
-      {/* dark underlay first so the line stays visible over cream and orange marks */}
       {[
         { w: 0.2, c: "#0f0907" },
         { w: 0.11, c: "#f8bf5a" },

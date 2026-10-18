@@ -21,7 +21,6 @@ export function OnlineLobby() {
   const ready = room?.status === "playing";
   useEffect(() => {
     if (!ready || !roomId) return;
-    // Linger a moment so both players see "Friend joined".
     const id = setTimeout(
       () => navigate(`/online/${roomId}/play`, { replace: true }),
       1200,
@@ -67,7 +66,7 @@ export function OnlineLobby() {
       setCopied(true);
       setTimeout(() => setCopied(false), 1500);
     } catch {
-      /* clipboard can be blocked; the code is on screen anyway */
+      /*  */
     }
   };
 
@@ -81,7 +80,7 @@ export function OnlineLobby() {
       if (navigator.share) await navigator.share(data);
       else await navigator.clipboard.writeText(link);
     } catch {
-      /* the person cancelled the share sheet */
+      /*  share sheet cancelled*/
     }
   };
 

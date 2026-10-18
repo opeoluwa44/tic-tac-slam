@@ -56,10 +56,10 @@ describe("matchWinner", () => {
 describe("onlineStatus", () => {
   it("speaks to the player", () => {
     expect(statusText(onlineStatus({ result: null, turn: "X" }, "X"))).toBe(
-      "Your move",
+      "Your turn",
     );
     expect(statusText(onlineStatus({ result: null, turn: "O" }, "X"))).toBe(
-      "Their move",
+      "Their turn",
     );
     expect(statusText(onlineStatus({ result: "X", turn: "O" }, "X"))).toBe(
       "You win",
@@ -83,7 +83,6 @@ describe("onlineStatus", () => {
 });
 
 describe("rules agree with the database", () => {
-  // The SQL function ttt_result must classify these 19,683 boards the same way.
   it("classifies every possible board", () => {
     const counts = { X: 0, O: 0, draw: 0, "in progress": 0 };
     for (let n = 0; n < 3 ** 9; n++) {

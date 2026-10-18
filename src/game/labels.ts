@@ -46,7 +46,7 @@ export function statusFor({
   }
   if (winner)
     return { lead: "You", accent: winner.player === computer ? "lose" : "win" };
-  return thinking ? { accent: "Thinking" } : { lead: "Your", accent: "move" };
+  return thinking ? { accent: "Thinking" } : { lead: "Your", accent: "turn" };
 }
 
 export const statusText = (s: Status) =>

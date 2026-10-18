@@ -127,7 +127,6 @@ export function SlamHero() {
               </g>
             </motion.g>
 
-            {/* X lands first */}
             <motion.g
               style={fromCenter}
               initial={{ y: -150, scale: 1.4, opacity: 0 }}
@@ -138,7 +137,6 @@ export function SlamHero() {
               <use href="#x-shape" stroke="#fcf5e8" />
             </motion.g>
 
-            {/* O slams on top */}
             <motion.g
               style={fromCenter}
               initial={{ y: -150, scale: 1.4, opacity: 0 }}
@@ -149,7 +147,6 @@ export function SlamHero() {
               <use href="#o-shape" stroke="url(#o-face)" />
             </motion.g>
 
-            {/* Debris pops out after impact */}
             <motion.g
               fill="#f8bf5a"
               initial={{ opacity: 0 }}

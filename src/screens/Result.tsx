@@ -7,7 +7,6 @@ import { gradientText } from "../ui";
 import { motion } from "motion/react";
 import { SlamMark } from "../components/SlamMark";
 import { Screen } from "../components/Screen";
-// import { MatchBadge } from "../components/MatchBadge";
 import { labelFor, statusFor, statusText } from "../game/labels";
 
 export function Result() {
@@ -86,7 +85,6 @@ export function Result() {
       </div>
 
       <div className="mt-auto flex flex-col gap-3.5 pt-8">
-        {/* No navigate() needed: the guard above redirects once the round resets. */}
         <Button onClick={() => dispatch({ type: "nextRound" })}>
           Next round
         </Button>

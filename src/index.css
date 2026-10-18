@@ -33,7 +33,7 @@
     overscroll-behavior: none;
   }
   button {
-    touch-action: manipulation; /* no double-tap zoom when tapping cells quickly */
+    touch-action: manipulation;
   }
 }
 

@@ -21,7 +21,7 @@ export function ScoreCard({
           : "border-white/10"
       }`}
     >
-      <div className="text-[13px] font-medium text-muted">Player {label}</div>
+      <div className="text-[13px] font-medium text-muted">{label}</div>
       <div
         className={`mt-1 font-display text-[44px] leading-none ${player === "O" ? "text-[#f59a45]" : ""}`}
       >

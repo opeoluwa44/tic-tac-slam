@@ -69,7 +69,7 @@ const vsComputer = (...cells: number[]) =>
   );
 
 it("undo against the computer takes back both moves", () => {
-  const undone = gameReducer(vsComputer(0, 4), { type: "undo" }); // you at 0, computer at 4
+  const undone = gameReducer(vsComputer(0, 4), { type: "undo" });
   expect(undone.board.every((c) => c === null)).toBe(true);
   expect(undone.current).toBe("X");
 });
@@ -90,7 +90,7 @@ it("the computer opens when it plays X", () => {
 
 it("undo keeps the computer's opening move when it plays X", () => {
   let s = createInitialState("hard", "X");
-  for (const index of [4, 0, 8]) s = gameReducer(s, { type: "play", index }); // computer, you, computer
+  for (const index of [4, 0, 8]) s = gameReducer(s, { type: "play", index });
   const undone = gameReducer(s, { type: "undo" });
   expect(undone.board[4]).toBe("X");
   expect(undone.board[0]).toBeNull();

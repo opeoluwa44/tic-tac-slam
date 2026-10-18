@@ -23,7 +23,6 @@ import {
 import { useRoom } from "../online/useRoom";
 import { gradientText } from "../ui";
 
-// Remembers the previous board during render, so we can tell which cell just changed.
 function useNewestMark(board: string) {
   const [prev, setPrev] = useState(board);
   const [newest, setNewest] = useState<number | undefined>();
@@ -100,13 +99,13 @@ function Match({
       <div className="flex gap-3">
         <ScoreCard
           player="X"
-          label={me === "X" ? "You" : "Friend"}
+          label={me === "X" ? "You" : "Opponent"}
           score={room.scores_x}
           active={!roundOver && room.turn === "X"}
         />
         <ScoreCard
           player="O"
-          label={me === "O" ? "You" : "Friend"}
+          label={me === "O" ? "You" : "Opponent"}
           score={room.scores_o}
           active={!roundOver && room.turn === "O"}
         />
@@ -130,7 +129,6 @@ function Match({
         }
       />
 
-      {/* Always rendered, so showing an error never moves the board. */}
       <p role="alert" className="h-5 text-center text-sm text-ember">
         {problem}
       </p>

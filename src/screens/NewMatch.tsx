@@ -9,20 +9,24 @@ import { useState } from "react";
 
 const OPTIONS: { opponent: Opponent; title: string; blurb: string }[] = [
   {
-    opponent: "human",
-    title: "A friend",
-    blurb: "Pass the phone back and forth",
+    opponent: "easy",
+    title: "Computer: Easy level",
+    blurb: "Plays random moves",
   },
-  { opponent: "easy", title: "Computer: Easy", blurb: "Plays random moves" },
   {
     opponent: "medium",
-    title: "Computer: Medium",
+    title: "Computer: Medium level",
     blurb: "Takes wins and blocks yours",
   },
   {
     opponent: "hard",
-    title: "Computer: Hard",
+    title: "Computer: Hard level",
     blurb: "Unbeatable. The best you can do is draw",
+  },
+  {
+    opponent: "human",
+    title: "A friend",
+    blurb: "One Phone, Two players - Take turns",
   },
 ];
 
@@ -70,12 +74,11 @@ export function NewMatch() {
             }`}
           >
             Play as {p}
-            {p === "X" ? " (first)" : ""}
           </button>
         ))}
       </div>
       <p className="mt-2 text-center text-sm text-muted">
-        Applies when playing the computer
+        Only applies when playing against the computer
       </p>
 
       <h1 className="mt-7 font-display text-[64px] uppercase leading-[0.95]">

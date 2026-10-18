@@ -38,7 +38,7 @@ describe("medium", () => {
       OO.
       X..
     `);
-    expect(pickMove(board, "O", "medium", () => 0)).toBe(5); // wins, rather than blocking at 2
+    expect(pickMove(board, "O", "medium", () => 0)).toBe(5);
   });
 
   it("blocks when it cannot win", () => {
@@ -61,8 +61,6 @@ describe("hard", () => {
     expect(pickMove(board, "O", "hard", () => 0)).toBe(5);
   });
 
-  // The game is small enough to check EVERY line of play. `me` plays 'hard';
-  // the opponent tries all possible moves. `me` must never lose.
   function neverLoses(board: Board, turn: Player, me: Player): boolean {
     const winner = getWinner(board);
     if (winner) return winner.player === me;
@@ -92,7 +90,6 @@ describe("hard", () => {
   });
 });
 
-// Can `player` force a win from here if both sides play their best?
 function forcedWin(board: Board, turn: Player, player: Player): boolean {
   const winner = getWinner(board);
   if (winner) return winner.player === player;
@@ -112,8 +109,8 @@ describe("the fork test", () => {
 
   it("medium walks into the fork", () => {
     const move = pickMove(board, "O", "medium", () => 0);
-    expect([0, 2, 6, 8]).toContain(move); // it likes corners
-    expect(forcedWin(makeMove(board, move, "O"), "X", "X")).toBe(true); // and that loses by force
+    expect([0, 2, 6, 8]).toContain(move);
+    expect(forcedWin(makeMove(board, move, "O"), "X", "X")).toBe(true);
   });
 
   it("hard defends with an edge", () => {

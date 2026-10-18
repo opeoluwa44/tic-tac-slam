@@ -7,7 +7,7 @@ export type Room = {
   code: string;
   host_id: string;
   guest_id: string | null;
-  board: string; // nine characters: X, O or "."
+  board: string;
   turn: Mark;
   result: Mark | "draw" | null;
   round: number;

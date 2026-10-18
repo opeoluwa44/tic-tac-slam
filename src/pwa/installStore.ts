@@ -5,7 +5,7 @@ export type BeforeInstallPromptEvent = Event & {
 
 export const isIos = () =>
   /iphone|ipad|ipod/i.test(navigator.userAgent) ||
-  (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1); // iPadOS pretends to be a Mac
+  (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
 
 const isStandalone = () =>
   window.matchMedia("(display-mode: standalone)").matches ||
@@ -17,7 +17,7 @@ const listeners = new Set<() => void>();
 const notify = () => listeners.forEach((l) => l());
 
 window.addEventListener("beforeinstallprompt", (e) => {
-  e.preventDefault(); // stop the browser's own mini-bar; we show our button instead
+  e.preventDefault();
   deferred = e as BeforeInstallPromptEvent;
   notify();
 });
@@ -40,7 +40,7 @@ export const getInstalled = () => installed;
 export async function promptInstall() {
   const event = deferred;
   if (!event) return;
-  deferred = null; // the event can only be used once
+  deferred = null;
   notify();
   await event.prompt();
   await event.userChoice;

@@ -73,11 +73,11 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
     }
     case "undo": {
       if (isOver(state.board)) return state;
-      // Against the computer, undo takes back your move AND its reply.
+
       const vsComputer = state.opponent !== "human";
       const count = vsComputer ? 2 : 1;
       if (state.moves.length < count) return state;
-      if (vsComputer && state.current === state.computer) return state; // it's mid-thought
+      if (vsComputer && state.current === state.computer) return state;
       const removed = state.moves.slice(-count);
       return {
         ...state,

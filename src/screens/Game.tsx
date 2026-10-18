@@ -39,7 +39,6 @@ export function Game() {
 
   useEffect(() => {
     if (!computerTurn || opponent === "human") return;
-    // A beat of "thinking" feels natural. An instant reply feels robotic.
     const id = setTimeout(() => {
       dispatch({
         type: "play",
@@ -72,7 +71,7 @@ export function Game() {
         >
           <ChevronLeft size={20} />
         </Link>
-        <MatchBadge round={state.round} opponent={opponent} />{" "}
+        <MatchBadge round={state.round} opponent={opponent} />
         <div className="size-11" />
       </header>
 

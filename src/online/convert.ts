@@ -5,7 +5,6 @@ import type { Mark, Room } from "./rooms";
 export const boardFromString = (s: string): Board =>
   [...s].map((ch): Cell => (ch === "X" || ch === "O" ? ch : null));
 
-// The cell that was filled between two snapshots of the board, if any.
 export function newestMark(prev: string, next: string): number | undefined {
   const i = [...next].findIndex((ch, idx) => ch !== "." && prev[idx] === ".");
   return i === -1 ? undefined : i;
@@ -29,5 +28,5 @@ export function onlineStatus(
   if (room.result === "draw") return { accent: "Draw" };
   if (room.result)
     return { lead: "You", accent: room.result === me ? "win" : "lose" };
-  return { lead: room.turn === me ? "Your" : "Their", accent: "move" };
+  return { lead: room.turn === me ? "Your" : "Their", accent: "turn" };
 }

@@ -27,7 +27,7 @@ export function OnlineStart() {
     setBusy(true);
     setError(null);
     try {
-      await ensureSession(); // the guest session is created here, only when needed
+      await ensureSession();
       const room = await action();
       navigate(`/online/${room.id}`);
     } catch (e) {
